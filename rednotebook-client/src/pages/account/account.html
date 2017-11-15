@@ -1,0 +1,120 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Your Account</ion-title>
+  </ion-navbar>
+
+  <div padding>
+    <ion-segment [(ngModel)]="view">
+      <ion-segment-button value="credentials">
+        Credentials
+      </ion-segment-button>
+      <ion-segment-button value="subscription">
+        Subscription
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+</ion-header>
+
+
+<ion-content>
+
+	<div [ngSwitch]="view">
+		<div *ngSwitchCase="'credentials'">
+			<ion-list>
+
+			  <ion-item>
+			    <ion-label>Username</ion-label>
+			    <ion-input disabled [(ngModel)]="user.local.username" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Email</ion-label>
+			    <ion-input type="text" [(ngModel)]="user.local.email"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Password</ion-label>
+			    <ion-input type="password" [(ngModel)]="user.newPassword"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>State of Residence</ion-label>
+			    <ion-select [(ngModel)]="user.state">
+			      <ion-option *ngFor="let state of states;" [value]="state._id">{{state.name}}</ion-option>
+			    </ion-select>
+			  </ion-item>
+
+
+			</ion-list>
+
+			<button [disabled]="submitting" ion-button full (click)="saveUser()">{{submitting ? 'Submitting...' : 'Save'}}</button>
+		</div>
+
+		<div *ngSwitchCase="'subscription'">
+			<ion-list>
+
+			  <ion-item>
+			    <ion-label>First Name</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.firstName" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Last Name</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.lastName" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Address</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.address1" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Address 2</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.address2" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>City</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.city" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>State</ion-label>
+			    <ion-select [(ngModel)]="user.billingInfo.state">
+			      <ion-option *ngFor="let state of states;" [value]="state.name">{{state.name}}</ion-option>
+			    </ion-select>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Zip</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.zip" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Credit Card Number</ion-label>
+			    <ion-input [(ngModel)]="user.billingInfo.creditCardNumber" type="text"></ion-input>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Expiration Month</ion-label>
+			    <ion-select [(ngModel)]="user.billingInfo.creditCardExpirationMonth">
+			    	<ion-option *ngFor="let month of months; let i = index" [value]="i+1">{{month}}</ion-option>
+			    </ion-select>
+			  </ion-item>
+
+			  <ion-item>
+			    <ion-label>Expiration Year</ion-label>
+			    <ion-input placeholder="yyyy" [(ngModel)]="user.billingInfo.creditCardExpirationYear" type="text"></ion-input>
+			  </ion-item>
+
+			</ion-list>
+
+			<button [disabled]="submitting" ion-button full (click)="saveSubscription()">{{submitting ? 'Submitting...' : 'Save'}}</button>
+
+			<p padding style="text-align: center;">Need to cancel your subscription? <br />Please email <a href="mailto:therednotebookproject@gmail.com">therednotebookproject@gmail.com</a></p>
+		</div>
+	</div>
+
+
+</ion-content>

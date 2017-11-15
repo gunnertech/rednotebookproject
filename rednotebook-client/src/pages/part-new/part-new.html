@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Part</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label>Title</ion-label>
+	    <ion-input [(ngModel)]="part.title" type="text" value=""></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Order</ion-label>
+	    <ion-select [(ngModel)]="part.position">
+	    	<ion-option *ngFor="let part of notebook?.parts; let i = index" [value]="i+1">{{i+1}}</ion-option>
+	      <ion-option [value]="(notebook?.parts?.length || 0) + 1" selected>{{(notebook?.parts?.length || 0) + 1}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+
+	</ion-list>
+
+	<button ion-button full [disabled]="!part.title" (click)="savePart()">Save</button>
+
+</ion-content>

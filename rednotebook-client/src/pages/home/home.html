@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    
+      <button ion-button menuToggle icon-only>
+        <ion-icon name='menu'></ion-icon>
+      </button>
+    
+    <ion-title (click)="log('hi')">
+      {{ completedAssignmentCount }} of {{user.assignments?.length}} completed
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="loadNotificationIndex()">
+        <ion-icon name="mail"></ion-icon>
+        <ion-badge item-right>{{unopenedNotificationCount}}</ion-badge>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <h2 padding>Table of contents</h2>
+
+  <ion-item-group *ngFor="let part of notebook?.parts">
+    <ion-item-divider color="light">
+      {{part.title}} 
+
+      <ion-badge *ngIf="user.role == 'admin'" (click)="loadNewDocument(part._id); $event.stopPropagation()" item-right><ion-icon name="add"></ion-icon></ion-badge>
+      <ion-badge *ngIf="user.role == 'admin'" (click)="loadEditPart(part._id); $event.stopPropagation()" item-right><ion-icon name="create"></ion-icon></ion-badge>
+      <ion-badge *ngIf="user.role == 'admin'" (click)="removePart(part._id); $event.stopPropagation()" item-right><ion-icon name="trash"></ion-icon></ion-badge>
+    </ion-item-divider>
+    <ion-item *ngFor="let document of part.documents" (click)="loadDocumentShow(document._id)"><span [color]="document.assignment && !document.assignment.completedAt ? 'primary' : ''">{{ document.title }}</span></ion-item>
+  </ion-item-group>
+
+  <ion-fab right bottom *ngIf="user.role == 'admin'">
+    <button ion-fab color="primary"><ion-icon name="arrow-dropup"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="loadNewPart(notebook?._id)"  ><ion-icon name="add"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+</ion-content>

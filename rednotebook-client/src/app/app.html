@@ -1,0 +1,22 @@
+<!-- this menu section should hold what content and destine to where
+// at what point in time?
+// That is determined by the last line in this -->
+<ion-menu [content]="content">
+ 	<ion-header>
+	  <ion-toolbar>
+	    <ion-title>Navigation</ion-title>
+	  </ion-toolbar>
+	</ion-header>
+ 
+  <ion-content>
+    <ion-list>
+      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+    </ion-list>
+  </ion-content>
+ 
+</ion-menu>
+
+<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+<!-- <ion-nav [root]="rootPage"></ion-nav> -->

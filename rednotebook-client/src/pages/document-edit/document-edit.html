@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Edit {{document.title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label>Title</ion-label>
+	    <ion-input [(ngModel)]="document.title" type="text" value=""></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Part</ion-label>
+	    <ion-select [(ngModel)]="document.partId">
+	      <ion-option *ngFor="let part of notebook.parts" [value]="part._id">{{part.title}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>State</ion-label>
+	    <ion-select [(ngModel)]="document.stateId">
+	      <ion-option [value]="null">Not Applicable</ion-option>
+	      <ion-option *ngFor="let state of states" [value]="state._id">{{state.name}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Perpetual?</ion-label>
+	    <ion-checkbox [(ngModel)]="document.isOngoing"></ion-checkbox>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Order</ion-label>
+	    <ion-select [(ngModel)]="document.position">
+	      <ion-option *ngFor="let document of document.part?.documents; let i = index" [value]="i+1">{{i+1}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+
+	</ion-list>
+
+	<button ion-button full [disabled]="!document.title" (click)="saveDocument()">Save</button>
+
+</ion-content>

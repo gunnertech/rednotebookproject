@@ -1,0 +1,156 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{document.title}}</ion-title>
+    <!-- <ion-buttons right>
+      <button ion-button icon-right (click)="saveResponses()">
+        Save
+      </button>
+    </ion-buttons> -->
+    <ion-buttons right>
+      <button ion-button icon-right (click)="printDocument()">
+        Print
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="cards-bg">
+  <div *ngFor="let section of document.sections">
+    <ion-card>
+      <ion-card-header text-wrap *ngIf="section.title">{{section.title}}</ion-card-header>
+      <ion-card-content *ngIf="section.description">
+        <p>{{section.description}}</p>
+      </ion-card-content>
+
+      <ion-item text-wrap *ngFor="let input of section.inputs">
+        <ion-badge *ngIf="user.role == 'admin'" (click)="removeInput(input._id); $event.stopPropagation()" item-left><ion-icon name="trash"></ion-icon></ion-badge>
+        <ion-badge *ngIf="user.role == 'admin'" (click)="loadInputEdit(section._id, input._id); $event.stopPropagation()" item-left><ion-icon name="create"></ion-icon></ion-badge> 
+
+        <!-- <button ion-button icon-left small full (click)="loadEditSection(section._id); $event.stopPropagation()">
+          <ion-icon name="create"></ion-icon>
+          <div>Edit</div>
+        </button> -->
+
+        <ion-label stacked *ngIf="input.dataType != 'File'">
+          {{input.label}}
+        </ion-label>
+
+        <ion-row *ngIf="input.dataType == 'File'" wrap>
+          <ion-col>
+            <h5>{{input.label}}</h5>
+            <p text-wrap>{{input.description}}</p>
+            <input name="file" type="file" (change)="fileChange($event, input)" placeholder="Upload Completed Doc" accept=".pdf,.doc,.docx,.jpg,.jpeg,.gif,.png">
+            <a color="secondary" icon-right ion-button small *ngIf="input.documentUrl" target="_blank" [href]="input.documentUrl">Blank <ion-icon name="document"></ion-icon></a>
+            
+            <a color="secondary" icon-right ion-button small *ngIf="input.responseValue" target="_blank" [href]="sanitize(input.responseValue)">Completed <ion-icon name="document"></ion-icon></a>
+          </ion-col>
+          
+        </ion-row>
+        
+        <ion-datetime (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" *ngIf="input.dataType == 'Date'" displayformat="MMM DD YYYY"></ion-datetime>
+        
+        <ion-input (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" [placeholder]="input.placeholder || ''" *ngIf="(input.dataType == 'Short Text' || input.dataType == 'Number') && !input.choices" type="text"></ion-input>
+
+        <ion-textarea (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" [placeholder]="input.placeholder || ''" *ngIf="input.dataType == 'Long Text'" type="text"></ion-textarea>
+
+        <ion-select [multiple]="input.allowMultipleChoiceSelections" (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" *ngIf="input.choices">
+          <ion-option *ngFor="let choice of input.choices.split('\n');">{{choice}}</ion-option>
+        </ion-select>
+
+      </ion-item>
+
+      <ion-row *ngIf="user.role == 'admin'">
+        <ion-col>
+          <button ion-button icon-left small full (click)="loadEditSection(section._id); $event.stopPropagation()">
+            <ion-icon name="create"></ion-icon>
+            <div>Edit</div>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-left small full (click)="loadInputEdit(section._id); $event.stopPropagation()">
+            <ion-icon name="add"></ion-icon>
+            <div>Input</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <button ion-button icon-left small full (click)="removeSection(section._id); $event.stopPropagation()">
+            <ion-icon name="trash"></ion-icon>
+            <div>Delete</div>
+          </button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <button *ngIf="section.children.length && !section.children[0].forceShow" (click)="showClonedSection(section.children[0])" ion-button full color="secondary">Add Another</button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    
+    <div *ngFor="let child of section.children; let i = index">
+      <ion-card *ngIf="child.hasAnyResponses || child.forceShow">
+        <ion-card-header *ngIf="child.title">{{child.title}}</ion-card-header>
+        <ion-card-content *ngIf="child.description">
+          <p>{{child.description}}</p>
+        </ion-card-content>
+
+        <ion-item *ngFor="let input of child.inputs">
+          <ion-label stacked>
+            {{input.label}}
+          </ion-label>
+          
+          <ion-datetime (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" *ngIf="input.dataType == 'Date'" displayformat="MMM DD YYYY"></ion-datetime>
+          
+          <ion-input (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" [placeholder]="input.placeholder || ''" *ngIf="(input.dataType == 'Short Text' || input.dataType == 'Number') && !input.choices" type="text"></ion-input>
+
+          <ion-textarea (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" [placeholder]="input.placeholder || ''" *ngIf="input.dataType == 'Long Text'" type="text"></ion-textarea>
+
+          <ion-select [multiple]="input.allowMultipleChoiceSelections" (ngModelChange)="saveResponse(input)" [(ngModel)]="input.responseValue" *ngIf="input.choices">
+            <ion-option *ngFor="let choice of input.choices.split('\n');">{{choice}}</ion-option>
+          </ion-select>
+
+        </ion-item>
+
+        <ion-row>
+          <ion-col>
+            <button *ngIf="!section.children[i+1].forceShow" (click)="showClonedSection(section.children[i+1])" ion-button full color="secondary">Add Another</button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </div>
+
+
+  </div>
+
+  
+
+	<ion-fab right bottom *ngIf="user.role == 'admin'">
+    <button ion-fab color="primary"><ion-icon name="arrow-dropup"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="loadSectionNew(document._id)"  ><ion-icon name="add"></ion-icon></button>
+      <button ion-fab (click)="removeDocument()"  ><ion-icon name="trash"></ion-icon></button>
+      <button ion-fab (click)="loadEditDocument()"><ion-icon name="create"></ion-icon></button>
+      <button ion-fab (click)="sendNotification()"><ion-icon name="send"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <!-- <ion-buttons center> -->
+      <button light full ion-button color="light" (click)="saveAssignment()">
+        {{assignment.completedAt ? 'Mark Incomplete' : 'Mark Complete'}}
+      </button>
+    <!-- </ion-buttons> -->
+
+    <!-- <ion-buttons right>
+      <button ion-button icon-right (click)="printDocument()">
+        Print
+      </button>
+    </ion-buttons> -->
+    
+  </ion-toolbar>
+</ion-footer>

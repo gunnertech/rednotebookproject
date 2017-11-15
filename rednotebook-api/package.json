@@ -1,0 +1,78 @@
+{
+  "name": "rednotebook-api",
+  "version": "1.0.0",
+  "description": "Wouldn't you like to know?",
+  "keywords": [
+    "node",
+    "express",
+    "mongodb"
+  ],
+  "author": "Cody Swann <cody@gunnertech.com>",
+  "homepage": "https://github.com/gunnertech/rednotebook",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf build && mkdir build",
+    "build-server": "./node_modules/babel-cli/bin/babel.js -d ./build ./",
+    "build": "npm run clean && npm run build-server",
+    "start": "node ./build/server.conf.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.7.19",
+    "basic-auth": "^1.1.0",
+    "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.1",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.1",
+    "core-js": "^2.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.17.2",
+    "method-override": "^2.3.6",
+    "moment": "^2.16.0",
+    "mongoose": "^4.4.19",
+    "multer": "^1.2.1",
+    "multer-s3": "^2.5.0",
+    "node-env-file": "^0.1.8",
+    "node-recurly": "git+https://github.com/cgerrior/node-recurly.git",
+    "node-uuid": "^1.4.7",
+    "nodemailer": "^2.6.4",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1",
+    "passport-local": "^1.0.0",
+    "pdfkit": "^0.8.0",
+    "sendgrid": "^4.7.1",
+    "socket.io": "^1.7.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.1",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "babel-register": "^6.9.0",
+    "babel-runtime": "^6.9.2",
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-docco": "0.0.4",
+    "gulp-nodemon": "^2.0.7",
+    "gulp-rename": "^1.2.2",
+    "gulp-scss-lint": "^0.4.0",
+    "gulp-util": "^3.0.7",
+    "mocha": "^2.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gunnertech/rednotebook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gunnertech/rednotebookissues"
+  },
+  "engines": {
+    "node": ">= 4.2.1",
+    "npm": ">= 3"
+  }
+}

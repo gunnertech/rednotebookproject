@@ -1,0 +1,76 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Input</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label>Label</ion-label>
+	    <ion-input [(ngModel)]="input.label" type="text"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Placeholder</ion-label>
+	    <ion-input [(ngModel)]="input.placeholder" type="text"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Description</ion-label>
+	    <ion-textarea [(ngModel)]="input.description"></ion-textarea>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Data Type</ion-label>
+	    <ion-select [(ngModel)]="input.dataType">
+	      <ion-option *ngFor="let dataType of ['File', 'Short Text', 'Number', 'Long Text', 'Date']">{{dataType}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Choices</ion-label>
+	    <ion-textarea [(ngModel)]="input.choices"></ion-textarea>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Allow Multiple Selections?</ion-label>
+	    <ion-checkbox [(ngModel)]="input.allowMultipleChoiceSelections"></ion-checkbox>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Requires Encryption?</ion-label>
+	    <ion-checkbox [(ngModel)]="input.requiresEncryption"></ion-checkbox>
+	  </ion-item>
+
+	  <ion-item>
+	  	<ion-row>
+	  		<ion-col>
+	  			Document
+	  		</ion-col>
+	  		<ion-col>
+	  		<input name="file" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.gif,.png">
+	  		</ion-col>
+	  	</ion-row>
+
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Order</ion-label>
+	    <ion-select [(ngModel)]="input.position">
+	      <ion-option *ngFor="let input of section.inputs; let i = index" [value]="i+1">{{i+1}}</ion-option>
+	      <ion-option selected [value]="(section.inputs?.length || 0) + 1" >{{(section.inputs?.length || 0) + 1}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+
+	</ion-list>
+
+	<button [disabled]="!input.dataType || !input.position" ion-button full (click)="saveInput()">Save</button>
+
+</ion-content>

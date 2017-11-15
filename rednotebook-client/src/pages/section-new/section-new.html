@@ -1,0 +1,43 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Add Section</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+	<ion-list>
+
+	  <ion-item>
+	    <ion-label>Title</ion-label>
+	    <ion-input [(ngModel)]="section.title" type="text"></ion-input>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Description</ion-label>
+	    <ion-textarea [(ngModel)]="section.description"></ion-textarea>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Repeatable?</ion-label>
+	    <ion-checkbox [(ngModel)]="section.repeatable"></ion-checkbox>
+	  </ion-item>
+
+	  <ion-item>
+	    <ion-label>Order</ion-label>
+	    <ion-select [(ngModel)]="section.position">
+	      <ion-option *ngFor="let section of document.sections; let i = index" [value]="i+1">{{i+1}}</ion-option>
+	      <ion-option [value]="(document.sections?.length || 0) + 1" >{{(document.sections?.length || 0) + 1}}</ion-option>
+	    </ion-select>
+	  </ion-item>
+
+
+	</ion-list>
+
+	<button ion-button full (click)="saveSection()">Save</button>
+
+
+</ion-content>
